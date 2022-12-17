@@ -6,35 +6,46 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:48:31 by lorobert          #+#    #+#             */
-/*   Updated: 2022/12/08 15:38:15 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/12/17 15:49:52 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pthread.h>
-#include <unistd.h>
 #include <stdlib.h>
 #include "philo.h"
 
-void	ft_pustr(char *str)
+int	init_philos(t_vars *vars)
 {
 	int	i;
 
+	vars->forks = malloc(sizeof(pthread_mutex_t) * vars->n_philo);
+	if (!vars->forks)
+		return (1);
 	i = 0;
-	while (str[i])
+	while (i < vars->n_philo)
+	{
+		if (pthread_mutex_init(&vars->forks[i], NULL))
+			return (1);
 		i++;
-	write(1, str, i);
-}
-
-void	print_help(void)
-{
-	ft_pustr("Usage: ./philo number_of_philosophers time_to_die time_to_eat ");
-	ft_pustr("time_to_sleep [number_of_times_each_philosopher_must_eat]\n");
+	}
+	vars->philos = malloc(sizeof(t_philo) * vars->n_philo);
+	if (!vars->philos)
+		return (1);
+	i = 0;
+	while (i < vars->n_philo)
+	{
+		vars->philos[i].index = i + 1;
+		vars->philos[i].f_left = &vars->forks[i];
+		vars->philos[i].f_right = &vars->forks[(i + 1) % vars->n_philo];
+		i++;
+	}
+	vars->is_dead = 0;
+	return (0);
 }
 
 t_vars	*parse_args(int argc, char **argv)
 {
 	t_vars	*vars;
-	int		i;
 
 	if (argc < 5 || argc > 6)
 		return (NULL);
@@ -42,13 +53,10 @@ t_vars	*parse_args(int argc, char **argv)
 	if (!vars)
 		return (NULL);
 	vars->n_philo = ft_atoi(argv[1]);
-	vars->philos = malloc(sizeof(t_philo) * vars->n_philo);
-	i = 0;
-	while (i < vars->n_philo)
+	if (init_philos(vars))
 	{
-		vars->philos[i].index = i + 1;
-		vars->philos[i].state = thinking;
-		i++;
+		clean(vars);
+		return (NULL);
 	}
 	vars->t_die = ft_atoi(argv[2]);
 	vars->t_eat = ft_atoi(argv[3]);
@@ -57,6 +65,7 @@ t_vars	*parse_args(int argc, char **argv)
 		vars->n_eat = ft_atoi(argv[5]);
 	else
 		vars->n_eat = 0;
+	vars->start = get_timestamp();
 	return (vars);
 }
 
@@ -85,9 +94,30 @@ int	check_params(t_vars *vars)
 	return (0);
 }
 
+void	clean(t_vars *vars)
+{
+	int	i;
+
+	i = 0;
+	if (vars && vars->forks)
+	{
+		while (i < vars->n_philo)
+		{
+			pthread_mutex_destroy(&vars->forks[i]);
+			i++;
+		}
+		free(vars->forks);
+	}
+	if (vars && vars->philos)
+		free(vars->philos);
+	if (vars)
+		free(vars);
+}
+
 int	main(int argc, char **argv)
 {
-	t_vars	*vars;
+	t_vars		*vars;
+	int			i;
 
 	vars = parse_args(argc, argv);
 	if (!vars)
@@ -97,8 +127,21 @@ int	main(int argc, char **argv)
 	}
 	if (check_params(vars))
 	{
-		free(vars->philos);
-		free(vars);
+		clean(vars);
 		return (0);
 	}
+	i = 0;
+	while (i < vars->n_philo)
+	{
+		pthread_create(&vars->philos[i].thread, NULL, philosophy, &vars->philos[i]);
+		i++;
+	}
+	i = 0;
+	while (i < vars->n_philo)
+	{
+		pthread_join(&vars->philos[i].thread, NULL);
+		i++;
+	}
+	clean(vars);
+	return (0);
 }
