@@ -6,12 +6,13 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:48:31 by lorobert          #+#    #+#             */
-/*   Updated: 2022/12/17 15:49:52 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/12/19 18:34:23 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pthread.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "philo.h"
 
 int	init_philos(t_vars *vars)
@@ -37,6 +38,7 @@ int	init_philos(t_vars *vars)
 		vars->philos[i].index = i + 1;
 		vars->philos[i].f_left = &vars->forks[i];
 		vars->philos[i].f_right = &vars->forks[(i + 1) % vars->n_philo];
+		vars->philos[i].vars = vars;
 		i++;
 	}
 	vars->is_dead = 0;
@@ -73,22 +75,22 @@ int	check_params(t_vars *vars)
 {
 	if (vars->n_philo < 2)
 	{
-		ft_pustr("Not enough philosophers\n");
+		printf("Not enough philosophers\n");
 		return (1);
 	}
 	else if (vars->n_philo > 100)
 	{
-		ft_pustr("Too many philosophers\n");
+		printf("Too many philosophers\n");
 		return (1);
 	}
 	if (vars->t_die < 0 || vars->t_eat < 0 || vars->t_sleep < 0)
 	{
-		ft_pustr("Time cannot be negative\n");
+		printf("Time cannot be negative\n");
 		return (1);
 	}
 	if (vars->n_eat < 0)
 	{
-		ft_pustr("Meals required cannot be negative\n");
+		printf("Meals required cannot be negative\n");
 		return (1);
 	}
 	return (0);
@@ -139,7 +141,7 @@ int	main(int argc, char **argv)
 	i = 0;
 	while (i < vars->n_philo)
 	{
-		pthread_join(&vars->philos[i].thread, NULL);
+		pthread_join(vars->philos[i].thread, NULL);
 		i++;
 	}
 	clean(vars);

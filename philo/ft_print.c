@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 14:14:46 by lorobert          #+#    #+#             */
-/*   Updated: 2022/12/17 15:37:25 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/12/19 18:43:34 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@
 void	print_help(void)
 {
 	printf("Usage: ./philo number_of_philosophers time_to_die time_to_eat \
-		time_to_sleep [number_of_times_each_philosopher_must_eat]\n");
+time_to_sleep [number_of_times_each_philosopher_must_eat]\n");
 }
 
 static void	print_log(time_t start, int index, char *str)
 {
-	printf("%ld %d %s\n", time, index + 1, str);
+	printf("%ld %d %s\n", get_timestamp() - start, index, str);
 }
 
 void	print_state(t_philo *philo, t_state state)

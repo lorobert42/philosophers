@@ -6,7 +6,7 @@
 #    By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/10 14:40:57 by lorobert          #+#    #+#              #
-#    Updated: 2022/12/17 15:45:19 by lorobert         ###   ########.fr        #
+#    Updated: 2022/12/19 17:57:35 by lorobert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ SRCS	:=	philo.c \
 OBJS	:=	$(SRCS:.c=.o)
 
 CC		:=	gcc
-CFLAGS	:=	-Wall -Wextra -Werror
+CFLAGS	:=	-Wall -Wextra -Werror -pthread -g
 
 RM		:=	rm -f
 
@@ -32,7 +32,7 @@ RM		:=	rm -f
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) -o $(NAME)
+	$(CC) $(OBJS) -o $(NAME) -pthread
 
 clean:
 	$(RM) $(OBJS)

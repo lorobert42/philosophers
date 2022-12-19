@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:54:02 by lorobert          #+#    #+#             */
-/*   Updated: 2022/12/17 15:49:05 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/12/19 17:55:49 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int		ft_atoi(char const *nbr);
 time_t	get_timestamp(void);
 
 // printing
-void	ft_pustr(char *str);
 void	print_help(void);
 
 // cleaning
