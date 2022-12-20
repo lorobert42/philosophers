@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:48:31 by lorobert          #+#    #+#             */
-/*   Updated: 2022/12/19 18:34:23 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/12/20 14:32:20 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,12 @@ int	init_philos(t_vars *vars)
 		vars->philos[i].f_left = &vars->forks[i];
 		vars->philos[i].f_right = &vars->forks[(i + 1) % vars->n_philo];
 		vars->philos[i].vars = vars;
+		vars->philos[i].last_eat = get_timestamp();
+		vars->philos[i].meals = 0;
 		i++;
 	}
-	vars->is_dead = 0;
+	vars->must_end = 0;
+	vars->all_meals = 0;
 	return (0);
 }
 
@@ -66,29 +69,29 @@ t_vars	*parse_args(int argc, char **argv)
 	if (argc == 6)
 		vars->n_eat = ft_atoi(argv[5]);
 	else
-		vars->n_eat = 0;
+		vars->n_eat = -1;
 	vars->start = get_timestamp();
 	return (vars);
 }
 
-int	check_params(t_vars *vars)
+int	check_params(int argc, char **argv)
 {
-	if (vars->n_philo < 2)
+	if (ft_atoi(argv[1]) < 1)
 	{
 		printf("Not enough philosophers\n");
 		return (1);
 	}
-	else if (vars->n_philo > 100)
+	else if (ft_atoi(argv[1]) > 100)
 	{
 		printf("Too many philosophers\n");
 		return (1);
 	}
-	if (vars->t_die < 0 || vars->t_eat < 0 || vars->t_sleep < 0)
+	if (ft_atoi(argv[2]) < 0 || ft_atoi(argv[3]) < 0 || ft_atoi(argv[4]) < 0)
 	{
 		printf("Time cannot be negative\n");
 		return (1);
 	}
-	if (vars->n_eat < 0)
+	if (argc == 6 && ft_atoi(argv[5]) < 0)
 	{
 		printf("Meals required cannot be negative\n");
 		return (1);
@@ -121,15 +124,17 @@ int	main(int argc, char **argv)
 	t_vars		*vars;
 	int			i;
 
-	vars = parse_args(argc, argv);
-	if (!vars)
+	if (argc > 6 || argc < 5)
 	{
 		print_help();
 		return (0);
 	}
-	if (check_params(vars))
+	if (check_params(argc, argv))
+		return (0);
+	vars = parse_args(argc, argv);
+	if (!vars)
 	{
-		clean(vars);
+		print_help();
 		return (0);
 	}
 	i = 0;

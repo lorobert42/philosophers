@@ -1,0 +1,20 @@
+{
+	"makefile.launchConfigurations": [
+		{
+			"cwd": "philo",
+			"binaryPath": "philo",
+			"binaryArgs": [
+				"3",
+				"600",
+				"100",
+				"200"
+			],
+			"stopAtEntry": true
+		},
+		{
+			"cwd": "/home/user/Documents/philosophers/philo",
+			"binaryPath": "/home/user/Documents/philosophers/philo/philo",
+			"binaryArgs": []
+		}
+	]
+}

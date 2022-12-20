@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 14:14:46 by lorobert          #+#    #+#             */
-/*   Updated: 2022/12/19 18:43:34 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/12/20 14:14:32 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void	print_state(t_philo *philo, t_state state)
 		print_log(philo->vars->start, philo->index, "is sleeping");
 	else if (state == DEAD)
 		print_log(philo->vars->start, philo->index, "died");
+	else if (state == FORK_L || state == FORK_R)
+		print_log(philo->vars->start, philo->index, "has taken a fork");
 	else if (state == FORK_L)
 		print_log(philo->vars->start, philo->index, "took left fork");
 	else if (state == FORK_R)

@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:54:02 by lorobert          #+#    #+#             */
-/*   Updated: 2022/12/19 17:55:49 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/12/20 14:23:43 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_philo
 {
 	int				index;
 	time_t			last_eat;
+	int				meals;
 	pthread_mutex_t	*f_left;
 	pthread_mutex_t	*f_right;
 	pthread_t		thread;
@@ -47,13 +48,15 @@ typedef struct s_vars
 	time_t			t_sleep;
 	int				n_eat;
 	pthread_mutex_t	*forks;
-	int				is_dead;
+	int				must_end;
+	int				all_meals;
 }	t_vars;
 
 void	*philosophy(void *arg);
 void	eat_sleep(t_philo *philo);
+void	think(t_philo *philo);
 void	print_state(t_philo *philo, t_state state);
-void	ft_sleep(time_t duration);
+void	ft_sleep(t_philo *philo, time_t duration);
 
 // conversion
 int		ft_atoi(char const *nbr);

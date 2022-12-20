@@ -2,6 +2,9 @@
 # Binary
 philo/philo
 
+# Testers
+*tester/
+
 # Prerequisites
 *.d
 
