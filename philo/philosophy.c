@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 13:53:57 by lorobert          #+#    #+#             */
-/*   Updated: 2022/12/20 14:23:39 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/12/21 14:56:26 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void	*philosophy(void *arg)
 		ft_sleep(philo, philo->vars->t_die + 100);
 		return (NULL);
 	}
-	if (philo->index % 2 == 0)
-		think(philo);
+	if (philo->index % 2 == 1)
+		ft_sleep(philo, philo->vars->t_die / 2);
 	while (philo->vars->must_end != 1)
 	{
 		eat_sleep(philo);

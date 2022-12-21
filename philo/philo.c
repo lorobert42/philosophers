@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:48:31 by lorobert          #+#    #+#             */
-/*   Updated: 2022/12/20 14:32:20 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/12/21 14:52:50 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,12 @@ int	init_philos(t_vars *vars)
 		vars->philos[i].f_left = &vars->forks[i];
 		vars->philos[i].f_right = &vars->forks[(i + 1) % vars->n_philo];
 		vars->philos[i].vars = vars;
-		vars->philos[i].last_eat = get_timestamp();
+		vars->philos[i].last_eat = vars->start;
 		vars->philos[i].meals = 0;
 		i++;
 	}
+	if (pthread_mutex_init(&vars->n_eat_mutex, NULL))
+		return (1);
 	vars->must_end = 0;
 	vars->all_meals = 0;
 	return (0);
@@ -58,11 +60,6 @@ t_vars	*parse_args(int argc, char **argv)
 	if (!vars)
 		return (NULL);
 	vars->n_philo = ft_atoi(argv[1]);
-	if (init_philos(vars))
-	{
-		clean(vars);
-		return (NULL);
-	}
 	vars->t_die = ft_atoi(argv[2]);
 	vars->t_eat = ft_atoi(argv[3]);
 	vars->t_sleep = ft_atoi(argv[4]);
@@ -71,6 +68,11 @@ t_vars	*parse_args(int argc, char **argv)
 	else
 		vars->n_eat = -1;
 	vars->start = get_timestamp();
+	if (init_philos(vars))
+	{
+		clean(vars);
+		return (NULL);
+	}
 	return (vars);
 }
 

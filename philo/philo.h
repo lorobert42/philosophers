@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:54:02 by lorobert          #+#    #+#             */
-/*   Updated: 2022/12/20 14:23:43 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/12/21 11:00:35 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_vars
 	time_t			t_eat;
 	time_t			t_sleep;
 	int				n_eat;
+	pthread_mutex_t	n_eat_mutex;
 	pthread_mutex_t	*forks;
 	int				must_end;
 	int				all_meals;

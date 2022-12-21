@@ -6,7 +6,7 @@
 /*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 15:41:14 by lorobert          #+#    #+#             */
-/*   Updated: 2022/12/20 14:23:39 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/12/21 14:54:13 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_sleep(t_philo *philo, time_t duration)
 	time_t	end;
 
 	end = get_timestamp() + duration;
-	while (get_timestamp() < end)
+	while (get_timestamp() < end && !philo->vars->must_end)
 	{
 		if (get_timestamp() - philo->last_eat > philo->vars->t_die)
 		{
