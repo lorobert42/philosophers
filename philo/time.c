@@ -3,15 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: lorobert <lorobert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 15:26:23 by lorobert          #+#    #+#             */
-/*   Updated: 2022/12/17 15:29:16 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/12/22 10:21:35 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/time.h>
-#include <stdlib.h>
 #include "philo.h"
 
 time_t	get_timestamp(void)

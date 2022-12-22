@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: lorobert <lorobert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:54:02 by lorobert          #+#    #+#             */
-/*   Updated: 2022/12/21 11:00:35 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/12/22 10:39:35 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 # define PHILO_H
 
 # include <pthread.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <sys/time.h>
+# include <unistd.h>
 
 typedef enum e_state
 {
@@ -51,6 +55,8 @@ typedef struct s_vars
 	pthread_mutex_t	*forks;
 	int				must_end;
 	int				all_meals;
+	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	end_mutex;
 }	t_vars;
 
 void	*philosophy(void *arg);
@@ -58,6 +64,9 @@ void	eat_sleep(t_philo *philo);
 void	think(t_philo *philo);
 void	print_state(t_philo *philo, t_state state);
 void	ft_sleep(t_philo *philo, time_t duration);
+
+int		get_end(t_vars *vars);
+void	set_end(t_vars *vars);
 
 // conversion
 int		ft_atoi(char const *nbr);

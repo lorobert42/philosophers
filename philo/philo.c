@@ -3,16 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: lorobert <lorobert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:48:31 by lorobert          #+#    #+#             */
-/*   Updated: 2022/12/21 14:52:50 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/12/22 11:07:50 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pthread.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include "philo.h"
 
 int	init_philos(t_vars *vars)
@@ -44,6 +41,10 @@ int	init_philos(t_vars *vars)
 		i++;
 	}
 	if (pthread_mutex_init(&vars->n_eat_mutex, NULL))
+		return (1);
+	if (pthread_mutex_init(&vars->print_mutex, NULL))
+		return (1);
+	if (pthread_mutex_init(&vars->end_mutex, NULL))
 		return (1);
 	vars->must_end = 0;
 	vars->all_meals = 0;
@@ -83,7 +84,7 @@ int	check_params(int argc, char **argv)
 		printf("Not enough philosophers\n");
 		return (1);
 	}
-	else if (ft_atoi(argv[1]) > 100)
+	else if (ft_atoi(argv[1]) > 250)
 	{
 		printf("Too many philosophers\n");
 		return (1);
@@ -118,7 +119,12 @@ void	clean(t_vars *vars)
 	if (vars && vars->philos)
 		free(vars->philos);
 	if (vars)
+	{
+		pthread_mutex_destroy(&vars->print_mutex);
+		pthread_mutex_destroy(&vars->end_mutex);
+		pthread_mutex_destroy(&vars->n_eat_mutex);
 		free(vars);
+	}
 }
 
 int	main(int argc, char **argv)

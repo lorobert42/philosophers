@@ -3,15 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   sleep.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: lorobert <lorobert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 15:41:14 by lorobert          #+#    #+#             */
-/*   Updated: 2022/12/21 14:54:13 by lorobert         ###   ########.fr       */
+/*   Updated: 2022/12/22 10:42:33 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/time.h>
-#include <unistd.h>
 #include "philo.h"
 
 void	ft_sleep(t_philo *philo, time_t duration)
@@ -19,12 +17,14 @@ void	ft_sleep(t_philo *philo, time_t duration)
 	time_t	end;
 
 	end = get_timestamp() + duration;
-	while (get_timestamp() < end && !philo->vars->must_end)
+	while (get_timestamp() < end && !get_end(philo->vars))
 	{
 		if (get_timestamp() - philo->last_eat > philo->vars->t_die)
 		{
-			philo->vars->must_end = 1;
+			set_end(philo->vars);
+			pthread_mutex_lock(&philo->vars->print_mutex);
 			print_state(philo, DEAD);
+			pthread_mutex_unlock(&philo->vars->print_mutex);
 			break ;
 		}
 		usleep(100);
