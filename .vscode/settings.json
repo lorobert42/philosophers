@@ -12,8 +12,8 @@
 			"stopAtEntry": true
 		},
 		{
-			"cwd": "/home/user/Documents/philosophers/philo",
-			"binaryPath": "/home/user/Documents/philosophers/philo/philo",
+			"cwd": "${workspaceFolder}/philo",
+			"binaryPath": "${workspaceFolder}/philo/philo",
 			"binaryArgs": []
 		}
 	]
