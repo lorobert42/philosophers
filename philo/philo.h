@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lorobert <marvin@42lausanne.ch>            +#+  +:+       +#+        */
+/*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:54:02 by lorobert          #+#    #+#             */
-/*   Updated: 2022/12/22 13:19:48 by lorobert         ###   ########.fr       */
+/*   Updated: 2023/01/21 15:37:10 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_philo
 {
 	int				index;
 	time_t			last_eat;
+	pthread_mutex_t	last_eat_mutex;
 	int				meals;
 	pthread_mutex_t	*f_left;
 	pthread_mutex_t	*f_right;
@@ -57,9 +58,11 @@ typedef struct s_vars
 	int				all_meals;
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	end_mutex;
+	pthread_t		thread;
 }	t_vars;
 
 void	*philosophy(void *arg);
+void	*supervise(void *arg);
 void	eat_sleep(t_philo *philo);
 void	think(t_philo *philo);
 void	print_state(t_philo *philo, t_state state);

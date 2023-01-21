@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   eat.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lorobert <marvin@42lausanne.ch>            +#+  +:+       +#+        */
+/*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 14:47:54 by lorobert          #+#    #+#             */
-/*   Updated: 2022/12/22 13:19:31 by lorobert         ###   ########.fr       */
+/*   Updated: 2023/01/21 15:58:52 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,14 @@ void	think(t_philo *philo)
 	ft_sleep(philo, think_time);
 }
 
-void	check_meals(t_philo *philo)
+void	eat(t_philo *philo)
 {
-	if (philo->vars->n_eat >= 0 && philo->meals == philo->vars->n_eat)
-	{
-		philo->vars->all_meals++;
-		if (philo->vars->all_meals == philo->vars->n_philo)
-			set_end(philo->vars);
-	}
-}
-
-void	add_meal(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->vars->n_eat_mutex);
+	print_state(philo, EATING);
+	pthread_mutex_lock(&philo->last_eat_mutex);
+	philo->last_eat = get_timestamp();
+	pthread_mutex_unlock(&philo->last_eat_mutex);
+	ft_sleep(philo, philo->vars->t_eat);
 	philo->meals++;
-	check_meals(philo);
-	pthread_mutex_unlock(&philo->vars->n_eat_mutex);
 }
 
 void	eat_sleep(t_philo *philo)
@@ -56,13 +48,10 @@ void	eat_sleep(t_philo *philo)
 		pthread_mutex_unlock(philo->f_right);
 		return ;
 	}
-	print_state(philo, EATING);
-	philo->last_eat = get_timestamp();
-	ft_sleep(philo, philo->vars->t_eat);
-	add_meal(philo);
+	eat(philo);
+	print_state(philo, SLEEPING);
 	pthread_mutex_unlock(philo->f_left);
 	pthread_mutex_unlock(philo->f_right);
-	print_state(philo, SLEEPING);
 	ft_sleep(philo, philo->vars->t_sleep);
 	think(philo);
 }

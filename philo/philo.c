@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lorobert <marvin@42lausanne.ch>            +#+  +:+       +#+        */
+/*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:48:31 by lorobert          #+#    #+#             */
-/*   Updated: 2022/12/22 13:19:47 by lorobert         ###   ########.fr       */
+/*   Updated: 2023/01/21 15:37:21 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int	init_philos(t_vars *vars)
 		vars->philos[i].vars = vars;
 		vars->philos[i].last_eat = vars->start;
 		vars->philos[i].meals = 0;
+		if (pthread_mutex_init(&vars->philos[i].last_eat_mutex, NULL))
+			return (1);
 		i++;
 	}
 	if (pthread_mutex_init(&vars->n_eat_mutex, NULL))
@@ -151,12 +153,14 @@ int	main(int argc, char **argv)
 		pthread_create(&vars->philos[i].thread, NULL, philosophy, &vars->philos[i]);
 		i++;
 	}
+	pthread_create(&vars->thread, NULL, supervise, vars);
 	i = 0;
 	while (i < vars->n_philo)
 	{
 		pthread_join(vars->philos[i].thread, NULL);
 		i++;
 	}
+	pthread_join(vars->thread, NULL);
 	clean(vars);
 	return (0);
 }

@@ -5,11 +5,26 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
+			"name": "Python: Current File",
+			"type": "python",
+			"request": "launch",
+			"program": "${file}",
+			"args": ["../"],
+			"console": "integratedTerminal",
+			"justMyCode": true
+		},
+		{
 			"name": "(gdb) Lancer",
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/philo/philo",
-			"args": ["3", "600", "100", "200", "3"],
+			"args": [
+				"3",
+				"600",
+				"100",
+				"200",
+				"3"
+			],
 			"stopAtEntry": false,
 			"cwd": "${fileDirname}",
 			"environment": [],
@@ -22,12 +37,11 @@
 					"ignoreFailures": true
 				},
 				{
-					"description":  "Définir la version désassemblage sur Intel",
+					"description": "Définir la version désassemblage sur Intel",
 					"text": "-gdb-set disassembly-flavor intel",
 					"ignoreFailures": true
 				}
 			]
 		}
-
 	]
 }

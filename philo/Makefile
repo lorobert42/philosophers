@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lorobert <marvin@42lausanne.ch>            +#+  +:+       +#+         #
+#    By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/10 14:40:57 by lorobert          #+#    #+#              #
-#    Updated: 2022/12/22 13:19:45 by lorobert         ###   ########.fr        #
+#    Updated: 2023/01/20 08:33:49 by lorobert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ SRCS	:=	philo.c \
 			philosophy.c \
 			eat.c \
 			sleep.c \
-			end.c
+			end.c \
+			supervisor.c
 OBJS	:=	$(SRCS:.c=.o)
 
 CC		:=	gcc

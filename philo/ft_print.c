@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lorobert <marvin@42lausanne.ch>            +#+  +:+       +#+        */
+/*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 14:14:46 by lorobert          #+#    #+#             */
-/*   Updated: 2022/12/22 13:19:41 by lorobert         ###   ########.fr       */
+/*   Updated: 2023/01/21 15:30:39 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ static void	print_log(time_t start, int index, char *str)
 void	print_state(t_philo *philo, t_state state)
 {
 	pthread_mutex_lock(&philo->vars->print_mutex);
-	if (state == THINKING && !get_end(philo->vars))
+	if (state == DEAD)
+		print_log(philo->vars->start, philo->index, "died");
+	else if (state == THINKING && !get_end(philo->vars))
 		print_log(philo->vars->start, philo->index, "is thinking");
 	else if (state == EATING && !get_end(philo->vars))
 		print_log(philo->vars->start, philo->index, "is eating");
 	else if (state == SLEEPING && !get_end(philo->vars))
 		print_log(philo->vars->start, philo->index, "is sleeping");
-	else if (state == DEAD)
-		print_log(philo->vars->start, philo->index, "died");
 	else if ((state == FORK_L || state == FORK_R) && !get_end(philo->vars))
 		print_log(philo->vars->start, philo->index, "has taken a fork");
 	else if (state == FORK_L && !get_end(philo->vars))
