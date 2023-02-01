@@ -1,24 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sleep.c                                            :+:      :+:    :+:   */
+/*   min.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lorobert <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/17 15:41:14 by lorobert          #+#    #+#             */
-/*   Updated: 2023/02/01 10:15:37 by lorobert         ###   ########.fr       */
+/*   Created: 2023/02/01 10:21:56 by lorobert          #+#    #+#             */
+/*   Updated: 2023/02/01 10:41:35 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ft_sleep(t_philo *philo, time_t duration)
+time_t	min(time_t a, time_t b)
 {
-	time_t	end;
-
-	end = get_timestamp() + duration;
-	while (get_timestamp() < end && !get_end(philo->vars))
-	{
-		usleep(100);
-	}
+	if (a <= b)
+		return (a);
+	return (b);
 }

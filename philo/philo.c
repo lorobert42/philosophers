@@ -3,55 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: lorobert <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:48:31 by lorobert          #+#    #+#             */
-/*   Updated: 2023/01/21 15:37:21 by lorobert         ###   ########.fr       */
+/*   Updated: 2023/02/01 12:38:25 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-int	init_philos(t_vars *vars)
-{
-	int	i;
-
-	vars->forks = malloc(sizeof(pthread_mutex_t) * vars->n_philo);
-	if (!vars->forks)
-		return (1);
-	i = 0;
-	while (i < vars->n_philo)
-	{
-		if (pthread_mutex_init(&vars->forks[i], NULL))
-			return (1);
-		i++;
-	}
-	vars->philos = malloc(sizeof(t_philo) * vars->n_philo);
-	if (!vars->philos)
-		return (1);
-	i = 0;
-	while (i < vars->n_philo)
-	{
-		vars->philos[i].index = i + 1;
-		vars->philos[i].f_left = &vars->forks[i];
-		vars->philos[i].f_right = &vars->forks[(i + 1) % vars->n_philo];
-		vars->philos[i].vars = vars;
-		vars->philos[i].last_eat = vars->start;
-		vars->philos[i].meals = 0;
-		if (pthread_mutex_init(&vars->philos[i].last_eat_mutex, NULL))
-			return (1);
-		i++;
-	}
-	if (pthread_mutex_init(&vars->n_eat_mutex, NULL))
-		return (1);
-	if (pthread_mutex_init(&vars->print_mutex, NULL))
-		return (1);
-	if (pthread_mutex_init(&vars->end_mutex, NULL))
-		return (1);
-	vars->must_end = 0;
-	vars->all_meals = 0;
-	return (0);
-}
 
 t_vars	*parse_args(int argc, char **argv)
 {
@@ -70,10 +29,9 @@ t_vars	*parse_args(int argc, char **argv)
 		vars->n_eat = ft_atoi(argv[5]);
 	else
 		vars->n_eat = -1;
-	vars->start = get_timestamp();
-	if (init_philos(vars))
+	if (init(vars))
 	{
-		clean(vars);
+		clean_all(vars);
 		return (NULL);
 	}
 	return (vars);
@@ -104,35 +62,31 @@ int	check_params(int argc, char **argv)
 	return (0);
 }
 
-void	clean(t_vars *vars)
+void	start(t_vars *vars)
 {
 	int	i;
 
+	vars->start = get_timestamp();
 	i = 0;
-	if (vars && vars->forks)
+	while (i < vars->n_philo)
 	{
-		while (i < vars->n_philo)
-		{
-			pthread_mutex_destroy(&vars->forks[i]);
-			i++;
-		}
-		free(vars->forks);
+		pthread_create(&vars->philos[i].thread, NULL,
+			philosophy, &vars->philos[i]);
+		i++;
 	}
-	if (vars && vars->philos)
-		free(vars->philos);
-	if (vars)
+	pthread_create(&vars->thread, NULL, supervise, vars);
+	i = 0;
+	while (i < vars->n_philo)
 	{
-		pthread_mutex_destroy(&vars->print_mutex);
-		pthread_mutex_destroy(&vars->end_mutex);
-		pthread_mutex_destroy(&vars->n_eat_mutex);
-		free(vars);
+		pthread_join(vars->philos[i].thread, NULL);
+		i++;
 	}
+	pthread_join(vars->thread, NULL);
 }
 
 int	main(int argc, char **argv)
 {
 	t_vars		*vars;
-	int			i;
 
 	if (argc > 6 || argc < 5)
 	{
@@ -147,20 +101,6 @@ int	main(int argc, char **argv)
 		print_help();
 		return (0);
 	}
-	i = 0;
-	while (i < vars->n_philo)
-	{
-		pthread_create(&vars->philos[i].thread, NULL, philosophy, &vars->philos[i]);
-		i++;
-	}
-	pthread_create(&vars->thread, NULL, supervise, vars);
-	i = 0;
-	while (i < vars->n_philo)
-	{
-		pthread_join(vars->philos[i].thread, NULL);
-		i++;
-	}
-	pthread_join(vars->thread, NULL);
-	clean(vars);
+	start(vars);
 	return (0);
 }

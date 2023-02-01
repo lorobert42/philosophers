@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   eat.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: lorobert <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 14:47:54 by lorobert          #+#    #+#             */
-/*   Updated: 2023/01/21 15:58:52 by lorobert         ###   ########.fr       */
+/*   Updated: 2023/02/01 10:42:25 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ void	think(t_philo *philo)
 	time_t	think_time;
 
 	print_state(philo, THINKING);
-	think_time = philo->last_eat + philo->vars->t_die - get_timestamp();
+	pthread_mutex_lock(&philo->last_eat_mutex);
+	think_time = min((philo->vars->t_die - get_timestamp()
+				+ philo->last_eat) / 2, 10);
+	pthread_mutex_unlock(&philo->last_eat_mutex);
 	ft_sleep(philo, think_time);
 }
 

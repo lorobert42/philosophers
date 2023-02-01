@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   supervisor.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: lorobert <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 08:31:51 by lorobert          #+#    #+#             */
-/*   Updated: 2023/01/21 16:10:11 by lorobert         ###   ########.fr       */
+/*   Updated: 2023/02/01 11:29:52 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 void	check_philo(t_vars *vars, int i)
 {
 	pthread_mutex_lock(&vars->philos[i].last_eat_mutex);
-	if (get_timestamp() - vars->philos[i].last_eat > vars->t_die)
+	if (get_timestamp() - vars->philos[i].last_eat > vars->t_die
+		&& !get_end(vars))
 	{
 		print_state(&vars->philos[i], DEAD);
 		set_end(vars);
@@ -27,6 +28,24 @@ void	check_philo(t_vars *vars, int i)
 		vars->all_meals++;
 	i++;
 	usleep(100);
+}
+
+static void	clean(t_vars *vars)
+{
+	int	i;
+
+	i = 0;
+	while (i < vars->n_philo)
+	{
+		pthread_mutex_destroy(&vars->forks[i]);
+		i++;
+	}
+	free(vars->forks);
+	free(vars->philos);
+	pthread_mutex_destroy(&vars->print_mutex);
+	pthread_mutex_destroy(&vars->end_mutex);
+	pthread_mutex_destroy(&vars->n_eat_mutex);
+	free(vars);
 }
 
 void	*supervise(void *arg)
@@ -42,9 +61,12 @@ void	*supervise(void *arg)
 		while (i < vars->n_philo)
 		{
 			check_philo(vars, i);
+			i++;
 		}
 		if (vars->all_meals == vars->n_philo)
 			set_end(vars);
 	}
+	usleep(10000);
+	clean(vars);
 	return (NULL);
 }

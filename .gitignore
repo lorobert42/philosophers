@@ -5,6 +5,7 @@ philo/philo
 # Testers
 *tester/
 *Tester/
+*test*/
 socrates/
 
 # Prerequisites

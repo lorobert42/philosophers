@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lorobert <lorobert@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: lorobert <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:54:02 by lorobert          #+#    #+#             */
-/*   Updated: 2023/01/21 15:37:10 by lorobert         ###   ########.fr       */
+/*   Updated: 2023/02/01 12:38:17 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,16 @@ void	ft_sleep(t_philo *philo, time_t duration);
 int		get_end(t_vars *vars);
 void	set_end(t_vars *vars);
 
+// initialization
+int		init(t_vars *vars);
+void	clean_all(t_vars *vars);
+
 // conversion
 int		ft_atoi(char const *nbr);
 time_t	get_timestamp(void);
+time_t	min(time_t a, time_t b);
 
 // printing
 void	print_help(void);
-
-// cleaning
-void	clean(t_vars *vars);
 
 #endif
