@@ -6,7 +6,7 @@
 /*   By: lorobert <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:36:02 by lorobert          #+#    #+#             */
-/*   Updated: 2023/02/01 12:37:38 by lorobert         ###   ########.fr       */
+/*   Updated: 2023/02/02 11:42:43 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void	clean_philos(t_vars *vars)
 		while (i < vars->n_philo)
 		{
 			pthread_mutex_destroy(&vars->philos[i].last_eat_mutex);
+			pthread_mutex_destroy(&vars->philos[i].meals_mutex);
 			i++;
 		}
 		free(vars->philos);
