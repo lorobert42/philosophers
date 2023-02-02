@@ -6,7 +6,7 @@
 /*   By: lorobert <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 14:47:54 by lorobert          #+#    #+#             */
-/*   Updated: 2023/02/01 10:42:25 by lorobert         ###   ########.fr       */
+/*   Updated: 2023/02/02 09:19:45 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ void	eat(t_philo *philo)
 	philo->last_eat = get_timestamp();
 	pthread_mutex_unlock(&philo->last_eat_mutex);
 	ft_sleep(philo, philo->vars->t_eat);
+	pthread_mutex_lock(&philo->meals_mutex);
 	philo->meals++;
+	pthread_mutex_unlock(&philo->meals_mutex);
 }
 
 void	eat_sleep(t_philo *philo)

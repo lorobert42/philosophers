@@ -6,7 +6,7 @@
 /*   By: lorobert <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 09:52:15 by lorobert          #+#    #+#             */
-/*   Updated: 2023/02/01 10:00:58 by lorobert         ###   ########.fr       */
+/*   Updated: 2023/02/02 09:19:15 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ int	init_philos(t_vars *vars)
 		vars->philos[i].last_eat = vars->start;
 		vars->philos[i].meals = 0;
 		if (pthread_mutex_init(&vars->philos[i].last_eat_mutex, NULL))
+			return (1);
+		if (pthread_mutex_init(&vars->philos[i].meals_mutex, NULL))
 			return (1);
 		i++;
 	}

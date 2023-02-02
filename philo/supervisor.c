@@ -6,7 +6,7 @@
 /*   By: lorobert <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 08:31:51 by lorobert          #+#    #+#             */
-/*   Updated: 2023/02/01 11:29:52 by lorobert         ###   ########.fr       */
+/*   Updated: 2023/02/02 09:20:19 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,28 +24,12 @@ void	check_philo(t_vars *vars, int i)
 		return ;
 	}
 	pthread_mutex_unlock(&vars->philos[i].last_eat_mutex);
+	pthread_mutex_lock(&vars->philos[i].meals_mutex);
 	if (vars->n_eat >= 0 && vars->philos[i].meals >= vars->n_eat)
 		vars->all_meals++;
+	pthread_mutex_unlock(&vars->philos[i].meals_mutex);
 	i++;
 	usleep(100);
-}
-
-static void	clean(t_vars *vars)
-{
-	int	i;
-
-	i = 0;
-	while (i < vars->n_philo)
-	{
-		pthread_mutex_destroy(&vars->forks[i]);
-		i++;
-	}
-	free(vars->forks);
-	free(vars->philos);
-	pthread_mutex_destroy(&vars->print_mutex);
-	pthread_mutex_destroy(&vars->end_mutex);
-	pthread_mutex_destroy(&vars->n_eat_mutex);
-	free(vars);
 }
 
 void	*supervise(void *arg)
@@ -66,7 +50,5 @@ void	*supervise(void *arg)
 		if (vars->all_meals == vars->n_philo)
 			set_end(vars);
 	}
-	usleep(10000);
-	clean(vars);
 	return (NULL);
 }

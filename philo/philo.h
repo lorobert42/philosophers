@@ -6,7 +6,7 @@
 /*   By: lorobert <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:54:02 by lorobert          #+#    #+#             */
-/*   Updated: 2023/02/01 12:38:17 by lorobert         ###   ########.fr       */
+/*   Updated: 2023/02/02 09:26:32 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_philo
 	time_t			last_eat;
 	pthread_mutex_t	last_eat_mutex;
 	int				meals;
+	pthread_mutex_t	meals_mutex;
 	pthread_mutex_t	*f_left;
 	pthread_mutex_t	*f_right;
 	pthread_t		thread;

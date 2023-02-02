@@ -6,7 +6,7 @@
 /*   By: lorobert <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:48:31 by lorobert          #+#    #+#             */
-/*   Updated: 2023/02/01 12:38:25 by lorobert         ###   ########.fr       */
+/*   Updated: 2023/02/02 09:08:12 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	start(t_vars *vars)
 	i = 0;
 	while (i < vars->n_philo)
 	{
+		vars->philos[i].last_eat = get_timestamp();
 		pthread_create(&vars->philos[i].thread, NULL,
 			philosophy, &vars->philos[i]);
 		i++;
@@ -102,5 +103,6 @@ int	main(int argc, char **argv)
 		return (0);
 	}
 	start(vars);
+	clean_all(vars);
 	return (0);
 }
