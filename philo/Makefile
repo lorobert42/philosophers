@@ -6,7 +6,7 @@
 #    By: lorobert <marvin@42lausanne.ch>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/10 14:40:57 by lorobert          #+#    #+#              #
-#    Updated: 2023/02/01 12:37:52 by lorobert         ###   ########.fr        #
+#    Updated: 2023/02/03 08:35:58 by lorobert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ SRCS	:=	philo.c \
 OBJS	:=	$(SRCS:.c=.o)
 
 CC		:=	gcc
-CFLAGS	:=	-Wall -Wextra -Werror -pthread -g
+CFLAGS	:=	-Wall -Wextra -Werror -pthread -fsanitize=address -g
 
 RM		:=	rm -f
 
@@ -37,7 +37,7 @@ RM		:=	rm -f
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) -o $(NAME) -pthread
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
 clean:
 	$(RM) $(OBJS)
