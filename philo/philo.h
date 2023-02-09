@@ -6,7 +6,7 @@
 /*   By: lorobert <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:54:02 by lorobert          #+#    #+#             */
-/*   Updated: 2023/02/02 09:26:32 by lorobert         ###   ########.fr       */
+/*   Updated: 2023/02/09 11:42:29 by lorobert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	*supervise(void *arg);
 void	eat_sleep(t_philo *philo);
 void	think(t_philo *philo);
 void	print_state(t_philo *philo, t_state state);
-void	ft_sleep(t_philo *philo, time_t duration);
+void	ft_sleep(time_t duration);
 
 int		get_end(t_vars *vars);
 void	set_end(t_vars *vars);
